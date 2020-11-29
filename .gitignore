@@ -1,0 +1,32 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+src/generated
+
+# other
+eclipse
+run
+logs
+libs/librarianlib-1.0.jar
+kotlinlib/
+jacoco/
+
+.DS_Store
+
+# Files from Forge MDK
+forge*changelog.txt

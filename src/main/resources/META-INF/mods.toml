@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/TeamWizardry/WorldCrafter/issues"
+logoFile="wizardry_logo.png"
+
+[[mods]]
+modId="worldcrafter"
+displayName="World Crafter"
+version="${version}"
+authors="Team Wizardry"
+credits="Escapee"
+description='''
+Create and customize your own in-world recipes
+'''
+
+[[dependencies.worldcrafter]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31.1.0,)"
+    ordering="AFTER"
+    side="BOTH"
