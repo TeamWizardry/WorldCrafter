@@ -103,7 +103,7 @@ allprojects {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc-version}-${forge_version}"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-${forge_version}"
     implementation 'org.yaml:snakeyaml:1.21'
 
     compile 'org.spongepowered:spongeapi:7.0.0'

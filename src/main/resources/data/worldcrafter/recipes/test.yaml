@@ -1,0 +1,17 @@
+type: fluid
+fluid:
+  type: minecraft:water
+  count: 1 # default
+  chance: 0 # default
+input:
+- item: minecraft:coal
+  count: 3
+  chance: 1 # default
+- item: minecraft:charcoal
+  count: 5
+output:
+- item: minecraft:diamond
+  count: 1 # default
+# tickEvents:
+# finishEvents:
+duration: 0

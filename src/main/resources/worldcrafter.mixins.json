@@ -1,9 +1,10 @@
 {
   "required": true,
-  "package": "com.teamwizardry.worldcrafter.mixins",
+  "package": "com.teamwizardry.worldcrafter.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "worldcrafter.refmap.json",
   "mixins": [
+  	"FluidMixin"
   ],
   "injectors": {
     "defaultRequire": 1
