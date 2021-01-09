@@ -1,28 +1,31 @@
 package com.teamwizardry.worldcrafter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public abstract class Recipe
 {
     protected List<ItemIngredient> ingredients;
     protected Output output;
-    protected List<RecipeConsumer> tickConsumers;
+    protected Map<RecipeConsumer, Integer> tickConsumers;
     protected List<RecipeConsumer> finishConsumers;
+    protected int duration;
     protected CompoundNBT extraData;
     
     public Recipe(List<ItemIngredient> ingredients, Output output, CompoundNBT extraData)
     {
         this.ingredients = ingredients;
         this.output = output;
-        this.tickConsumers = new LinkedList<>();
+        this.tickConsumers = new HashMap<>();
         this.finishConsumers = new LinkedList<>();
+        this.duration = 0;
         this.extraData = extraData;
     }
     
@@ -31,49 +34,58 @@ public abstract class Recipe
         List<ItemStack> internal = items.stream().map(ItemStack::copy).collect(Collectors.toList());
         for (ItemIngredient ingredient : ingredients)
         {
-            int count = ingredient.getInt("count");
+            int count = ingredient.getCount();
             for (ItemStack item : internal)
             {
-                if (item.getCount() <= 0)
+                if (item.isEmpty())
                     continue;
                 if (item.getItem() == ingredient.getItem())
                 {
                     int itemCount = item.getCount();
-                    if (count > itemCount)
+                    if (count >= itemCount)
                     {
-                        item.shrink(count);
+                        item.shrink(itemCount);
                         count -= itemCount;
                     }
                     else
                     {
-                        
+                       item.shrink(count);
+                       count = 0;
                     }
                     
                     if (count <= 0)
                         break;
                 }
             }
+            if (count > 0)
+                return false;
         }
         return true;
     }
     
-    public boolean isValid(World world, BlockPos pos)
+    public boolean isValid(RecipeInfo info, List<ItemStack> items)
     {
-        return true;
+        return this.matches(items);
     }
     
-    public void tick()
+    public void tick(RecipeInfo info, List<ItemEntity> items)
     {
-        tickConsumers.forEach(consumer -> consumer.apply(null));
+        int currentDuration = info.getCurrentDuration();
+        tickConsumers.forEach((consumer, interval) -> {
+            if (currentDuration % interval == 0)
+                consumer.apply(info, items);
+        });
     }
     
-    public boolean isFinished()
+    public boolean isFinished(RecipeInfo info, List<ItemEntity> items)
     {
-        return true;
+        return info.getCurrentDuration() > this.duration;
     }
     
-    public void finish()
+    public void finish(RecipeInfo info, List<ItemEntity> items)
     {
-        finishConsumers.forEach(consumer -> consumer.apply(null));
+        finishConsumers.forEach(consumer -> consumer.apply(info, items));
+        ingredients.forEach(ingredient -> ingredient.consume(items));
+        output.createOutput(info.getWorld(), info.getPos());
     }
 }

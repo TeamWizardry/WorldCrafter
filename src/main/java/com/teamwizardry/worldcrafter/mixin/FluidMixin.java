@@ -22,8 +22,7 @@ public abstract class FluidMixin
     {
         if (!(entity instanceof ItemEntity))
             return;
-        boolean isSourceBlock = ((FlowingFluidBlock) state.getBlock()).getFluidState(state).isSource();
-        if (!isSourceBlock)
+        if (!world.getFluidState(pos).isSource())
             return;
         FluidEntityTracker.addItem(world, pos, (ItemEntity) entity);
     }

@@ -1,5 +1,7 @@
 package com.teamwizardry.worldcrafter.fluid;
 
+import static com.teamwizardry.worldcrafter.WorldCrafter.entityStripper;
+import static com.teamwizardry.worldcrafter.WorldCrafter.fluidRecipes;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 
 import java.util.HashMap;
@@ -8,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.teamwizardry.worldcrafter.RecipeInfo;
-import com.teamwizardry.worldcrafter.WorldCrafter;
 
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
@@ -19,7 +21,7 @@ public class FluidRecipeManager
 {
     private static Map<World, FluidRecipeManager> managers = new HashMap<>();
     
-    private Map<Long, RecipeInfo<FluidRecipe>> existingRecipes;
+    private Map<Long, RecipeInfo> existingRecipes;
     
     private FluidRecipeManager()
     {
@@ -41,8 +43,17 @@ public class FluidRecipeManager
         
         List<Long> toRemove = new LinkedList<>();
         manager.existingRecipes.forEach((pos, recipe) -> {
-            if (recipe.isValid())
+            if (recipe.isValid(tracker.getItems(pos)))
+            {
+                List<ItemEntity> items = tracker.getItems(pos);
+                recipe.tick(items);
+                if (recipe.isFinished(items))
+                {
+                    recipe.finish(items);
+                    toRemove.add(pos);
+                }                
                 tracker.clear(BlockPos.fromLong(pos));
+            }
             else
                 toRemove.add(pos);
         });
@@ -51,20 +62,11 @@ public class FluidRecipeManager
             manager.existingRecipes.remove(pos);
         toRemove.clear();
         
-        manager.existingRecipes.forEach((pos, recipe) -> {
-            recipe.tick();
-            if (recipe.isFinished())
-            {
-                recipe.finish();
-                toRemove.add(pos);
-            }
+        tracker.forEach((pos, items) -> {
+            FluidRecipe recipe = fluidRecipes.getRecipe(entityStripper.apply(items));
+            if (recipe != null)
+                manager.existingRecipes.put(pos, new RecipeInfo(event.world, BlockPos.fromLong(pos), recipe));
         });
-        
-        for (Long pos : toRemove)
-            manager.existingRecipes.remove(pos);
-        toRemove.clear();
-        
-        tracker.forEach((pos, items) -> manager.existingRecipes.put(pos, new RecipeInfo<FluidRecipe>(event.world, BlockPos.fromLong(pos), WorldCrafter.fluidRecipes.getRecipe(items))));
         tracker.clear();
     }
 }

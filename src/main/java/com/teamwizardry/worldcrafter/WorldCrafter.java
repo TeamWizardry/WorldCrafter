@@ -1,5 +1,9 @@
 package com.teamwizardry.worldcrafter;
 
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +11,8 @@ import com.teamwizardry.worldcrafter.fluid.FluidRecipe;
 import com.teamwizardry.worldcrafter.fluid.FluidRecipeManager;
 import com.teamwizardry.worldcrafter.loading.RecipeLoader;
 
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +31,8 @@ public class WorldCrafter
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     
     public static final RecipeStorage<FluidRecipe> fluidRecipes = new RecipeStorage<>();
+    
+    public static final Function<List<ItemEntity>, List<ItemStack>> entityStripper = entities -> entities.stream().map(ItemEntity::getItem).collect(Collectors.toList());
     
     public static WorldCrafter INSTANCE;
     

@@ -14,7 +14,7 @@ public class ItemIngredientLoader extends Loader<ItemIngredient>
     
     protected static final String ITEM = "item";
     protected static final String COUNT = "count";
-    protected static final String CHANCE = "chance";
+    protected static final String CHANCE = "consumeChance";
     protected static final String NBT = "nbt";
     
     private ItemIngredientLoader() {}
