@@ -2,7 +2,12 @@ package com.teamwizardry.worldcrafter;
 
 import static com.teamwizardry.worldcrafter.NBTHelper.path;
 
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Ingredient<T extends Ingredient<T>>
 {
@@ -43,5 +48,15 @@ public abstract class Ingredient<T extends Ingredient<T>>
     public String getString(String path)
     {
         return NBTHelper.getString(data, path);
+    }
+    
+    public List<ItemStack> getMatchingItems()
+    {
+        return Arrays.asList();
+    }
+    
+    public List<FluidStack> getMatchingFluids()
+    {
+        return Arrays.asList();
     }
 }

@@ -1,5 +1,8 @@
 package com.teamwizardry.worldcrafter.fluid;
 
+import static com.teamwizardry.worldcrafter.WorldCrafter.location;
+
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,17 +13,25 @@ import com.teamwizardry.worldcrafter.ItemIngredient;
 import com.teamwizardry.worldcrafter.Output;
 import com.teamwizardry.worldcrafter.Recipe;
 import com.teamwizardry.worldcrafter.RecipeInfo;
+import com.teamwizardry.worldcrafter.WorldCrafter;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FluidRecipe extends Recipe
 {
+    public static final ResourceLocation UID = location("fluid_recipe");
+    
     private final FluidIngredient fluid;
     
     public FluidRecipe(List<ItemIngredient> ingredients, FluidIngredient fluid, Output output, int duration, CompoundNBT extraData)
@@ -83,4 +94,18 @@ public class FluidRecipe extends Recipe
         }
         return sources;
     }
+    
+    @Override
+    public List<List<FluidStack>> getFluidIngredients()
+    {
+        return Arrays.asList(fluid.getMatchingFluids());
+    }
+    
+    public FluidIngredient getFluid() { return fluid; }
+
+    @Override public ResourceLocation getId() { return UID; }
+
+    @Override public IRecipeSerializer<?> getSerializer() { return WorldCrafter.fluidSerializer; }
+
+    @Override public IRecipeType<?> getType() { return Registry.RECIPE_TYPE.getValue(UID).get(); }
 }

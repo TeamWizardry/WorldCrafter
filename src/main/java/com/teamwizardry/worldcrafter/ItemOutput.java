@@ -1,6 +1,10 @@
 package com.teamwizardry.worldcrafter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
 public class ItemOutput extends Ingredient<ItemOutput>
@@ -25,4 +29,20 @@ public class ItemOutput extends Ingredient<ItemOutput>
     public int getMax() { return this.max; }
     
     public CompoundNBT getNBT() { return this.nbt; }
+
+    @Override
+    public List<ItemStack> getMatchingItems()
+    {
+        List<ItemStack> list = new ArrayList<>();
+        ItemStack stack = new ItemStack(item);
+        if (nbt != null)
+            stack.setTag(nbt);
+        for (int i = min; i <= max; i++)
+        {
+            ItemStack copy = stack.copy();
+            copy.setCount(i);
+            list.add(copy);
+        }
+        return list;
+    }
 }

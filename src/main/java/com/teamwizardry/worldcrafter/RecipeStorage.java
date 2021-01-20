@@ -1,5 +1,6 @@
 package com.teamwizardry.worldcrafter;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,8 @@ import net.minecraft.item.ItemStack;
 public class RecipeStorage<T extends Recipe>
 {
     private Set<T> recipes = new HashSet<>();
+    
+    public Collection<T> getRecipes() { return recipes; }
     
     public T getRecipe(List<ItemStack> items)
     {

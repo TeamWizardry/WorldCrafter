@@ -1,14 +1,28 @@
 package com.teamwizardry.worldcrafter;
 
+import static com.teamwizardry.worldcrafter.ItemIngredient.ItemType.ITEM;
+import static com.teamwizardry.worldcrafter.ItemIngredient.ItemType.TAG;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.Tag;
 
 public class ItemIngredient extends Ingredient<ItemIngredient>
 {
+    public enum ItemType
+    {
+        ITEM,
+        TAG
+    }
+    
+    private final ItemType type;
     private final Item item;
+    private final Tag<Item> tag;
     private final int count;
     private final double baseConsumeChance;
     private final int consumeCount;
@@ -16,16 +30,35 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
     
     public ItemIngredient(Item item, int count, double consumeChance)
     {
+        this.type = ITEM;
         this.item = item;
+        this.tag = null;
+        
         this.count = count;
         this.baseConsumeChance = consumeChance;
         
         double totalConsumeCount = count * consumeChance;
-        this.consumeCount = (int) (totalConsumeCount);
+        this.consumeCount = (int) totalConsumeCount;
+        this.consumeChance = totalConsumeCount - consumeCount;
+    }
+    
+    public ItemIngredient(Tag<Item> tag, int count, double consumeChance)
+    {
+        this.type = TAG;
+        this.item = null;
+        this.tag = tag;
+        
+        this.count = count;
+        this.baseConsumeChance = consumeChance;
+        
+        double totalConsumeCount = count * consumeChance;
+        this.consumeCount = (int) totalConsumeCount;
         this.consumeChance = totalConsumeCount - consumeCount;
     }
     
     public Item getItem() { return this.item; }
+    
+    public Tag<Item> getTag() { return this.tag; }
     
     public int getCount() { return this.count; }
     
@@ -40,8 +73,11 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
         for (ItemEntity entity : items)
         {
             ItemStack stack = entity.getItem();
-            if (stack.getItem() != item)
-                continue;
+            switch (type)
+            {
+                case ITEM: if (stack.getItem() != item) continue; break;
+                case TAG: if (!tag.contains(stack.getItem())) continue; break;
+            }
             if (remaining >= stack.getCount())
             {
                 remaining -= stack.getCount();
@@ -55,5 +91,16 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
             if (remaining == 0)
                 return;
         }
+    }
+    
+    @Override
+    public List<ItemStack> getMatchingItems()
+    {
+        switch (type)
+        {
+            case ITEM: return Arrays.asList(new ItemStack(item, count));
+            case TAG: return tag.getAllElements().stream().map(item -> new ItemStack(item, count)).collect(Collectors.toList());
+        }
+        return super.getMatchingItems();
     }
 }

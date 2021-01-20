@@ -25,8 +25,7 @@ public class FluidIngredientLoader extends Loader<FluidIngredient>
         Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(Loader.loadString(yaml, TYPE)));
         int count = Loader.loadInt(yaml, COUNT, 1);
         count = Math.max(count, 1);
-        double chance = Loader.loadDouble(yaml, CHANCE, 0);
-        chance = MathHelper.clamp(chance, 0, 1);
+        double chance = MathHelper.clamp(Loader.loadDouble(yaml, CHANCE, 0), 0, 1);
         
         return new FluidIngredient(fluid, count, chance);
     }

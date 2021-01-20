@@ -13,8 +13,12 @@ import com.teamwizardry.worldcrafter.loading.RecipeLoader;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,7 +34,9 @@ public class WorldCrafter
     public static final String MODID = "worldcrafter";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     
+    public static final IRecipeType<FluidRecipe> fluidRecipeType = new RecipeType<>();
     public static final RecipeStorage<FluidRecipe> fluidRecipes = new RecipeStorage<>();
+    public static final IRecipeSerializer<FluidRecipe> fluidSerializer = new Recipe.Serializer<FluidRecipe>(fluidRecipes);
     
     public static final Function<List<ItemEntity>, List<ItemStack>> entityStripper = entities -> entities.stream().map(ItemEntity::getItem).collect(Collectors.toList());
     
@@ -44,6 +50,7 @@ public class WorldCrafter
         eventBus.addListener(this::registerRegistries);
         MinecraftForge.EVENT_BUS.addListener(this::serverStartingEvent);
         eventBus.addGenericListener(RecipeConsumer.class, this::registerRecipeConsumers);
+        eventBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeData);
         
         MinecraftForge.EVENT_BUS.register(FluidRecipeManager.class);
     }
@@ -53,9 +60,9 @@ public class WorldCrafter
     private void registerRegistries(RegistryEvent.NewRegistry event)
     {
         new RegistryBuilder<RecipeConsumer>().setType(RecipeConsumer.class)
-                                               .setName(location("recipe_consumer"))
-                                               .disableSaving()
-                                               .create();
+                                             .setName(location("recipe_consumer"))
+                                             .disableSaving()
+                                             .create();
     }
     
     private void registerRecipeConsumers(RegistryEvent.Register<RecipeConsumer> event)
@@ -69,11 +76,22 @@ public class WorldCrafter
 //                })).setRegistryName(MODID, "consume_fluid"));
     }
     
+    public void registerRecipeData(RegistryEvent.Register<IRecipeSerializer<?>> event)
+    {
+        Registry.register(Registry.RECIPE_TYPE, FluidRecipe.UID, fluidRecipeType);
+        event.getRegistry().register(fluidSerializer.setRegistryName(FluidRecipe.UID));
+    }
+    
     public void serverStartingEvent(FMLServerAboutToStartEvent event)
     {
         IReloadableResourceManager manager = event.getServer().getResourceManager();
         manager.addReloadListener((ISelectiveResourceReloadListener) (listener, predicate) -> {
             RecipeLoader.loadRecipes(manager, WorldCrafter.MODID + "/recipes");
         });
+    }
+    
+    private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T>
+    {
+        @Override public String toString() { return Registry.RECIPE_TYPE.getKey(this).toString(); }
     }
 }

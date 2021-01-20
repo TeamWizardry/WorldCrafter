@@ -1,5 +1,6 @@
 package com.teamwizardry.worldcrafter.fluid;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.teamwizardry.worldcrafter.Ingredient;
@@ -8,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FluidIngredient extends Ingredient<FluidIngredient>
 {
@@ -47,5 +49,11 @@ public class FluidIngredient extends Ingredient<FluidIngredient>
             if (remaining == 0)
                 return;
         }
+    }
+    
+    @Override
+    public List<FluidStack> getMatchingFluids()
+    {
+        return Arrays.asList(new FluidStack(fluid, count * 1000));
     }
 }

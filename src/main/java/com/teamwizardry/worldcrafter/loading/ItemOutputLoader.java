@@ -32,7 +32,7 @@ public class ItemOutputLoader extends Loader<ItemOutput>
         CompoundNBT nbt = NBTLoader.INSTANCE.load((Map<String, Object>) yaml.get(NBT));
         
         if (min == max && min == 1)
-            return new ItemOutput(item, min, max, nbt);
-        return new ItemOutput(item, count, count, nbt);
+            return new ItemOutput(item, count, count, nbt);
+        return new ItemOutput(item, min, max, nbt);
     }
 }

@@ -5,13 +5,16 @@ import static com.teamwizardry.worldcrafter.Output.OutputType.FLUID;
 import static com.teamwizardry.worldcrafter.Output.OutputType.ITEM;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Output
 {
@@ -77,4 +80,31 @@ public class Output
                 break;
         }
     }
+    
+    public List<List<ItemStack>> getMatchingItems()
+    {
+        switch (this.outputType)
+        {
+            case ITEM: return outputItems.stream().map(ItemOutput::getMatchingItems).collect(Collectors.toList());
+            case BLOCK: return Arrays.asList(outputBlock.getMatchingItems());
+            case FLUID: return Arrays.asList();
+        }
+        return Arrays.asList();
+    }
+    
+    public List<List<FluidStack>> getMatchingFluids()
+    {
+        switch (this.outputType)
+        {
+            case ITEM: return Arrays.asList();
+            case BLOCK: return Arrays.asList();
+            case FLUID: return Arrays.asList(outputFluid.getMatchingFluids());
+        }
+        return Arrays.asList();
+    }
+    
+    public List<ItemOutput> getItemOutputs() { return this.outputItems; }
+    public ItemOutput getItemOutput(int index) { return this.outputItems.get(index); }
+    public BlockOutput getBlockOutput() { return this.outputBlock; }
+    public FluidOutput getFluidOutput() { return this.outputFluid; }
 }
