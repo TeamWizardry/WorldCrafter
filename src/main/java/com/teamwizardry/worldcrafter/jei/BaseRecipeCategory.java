@@ -47,7 +47,7 @@ public abstract class BaseRecipeCategory<BaseRecipe extends Recipe> implements I
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, BaseRecipe recipe, IIngredients ingredients)
     {
-        int numInputs = recipe.getIngredients().size();
+        int numInputs = recipe.getItemIngredients().size();
         
         IGuiItemStackGroup items = recipeLayout.getItemStacks();
         items.addTooltipCallback((slotIndex, isInput, stack, tooltip) -> {

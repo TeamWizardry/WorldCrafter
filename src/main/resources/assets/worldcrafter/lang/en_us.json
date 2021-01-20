@@ -1,0 +1,9 @@
+{
+	"worldcrafter.jei.fluidRecipe": "In-World Fluid Crafting",
+	
+	"worldcrafter.item.consumeChance": "Consumes %d%%",
+	"worldcrafter.item.noConsume": "Not Consumed",
+	"worldcrafter.fluid.consumeChance": "Consumes %d%%",
+	"worldcrafter.fluid.consumed": "Consumed",
+	"worldcrafter.output.range": "Produces %d-%d"
+}

@@ -12,8 +12,8 @@ import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -29,7 +29,7 @@ public class FluidRecipeCategory extends BaseRecipeCategory<FluidRecipe>
         super(FluidRecipe.UID,
               guiHelper.createBlankDrawable(width, height),
               I18n.format("worldcrafter.jei.fluidRecipe"),
-              guiHelper.createDrawableIngredient(new ItemStack(Blocks.WATER)));
+              guiHelper.createDrawableIngredient(new FluidStack(Fluids.WATER, 1000)));
     }
     
     @Override public Class<? extends FluidRecipe> getRecipeClass() { return FluidRecipe.class; }
@@ -37,6 +37,8 @@ public class FluidRecipeCategory extends BaseRecipeCategory<FluidRecipe>
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, FluidRecipe recipe, IIngredients ingredients)
     {
+        super.setRecipe(recipeLayout, recipe, ingredients);
+        
         IGuiItemStackGroup items = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
         

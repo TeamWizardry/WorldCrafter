@@ -16,6 +16,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -55,9 +56,9 @@ public class JEIPlugin implements IModPlugin
     {
         double consumeChance = ingredient.getConsumeChance();
         if (consumeChance > 0 && consumeChance < 1)
-            return Arrays.asList(String.format("Consumes %.0f%%", consumeChance*100));
-        else if (Math.ceil(consumeChance) == 0)
-            return Arrays.asList("Not Consumed");
+            return Arrays.asList(I18n.format("worldcrafter.item.consumeChance", (int) (consumeChance*100)));
+        else if ((int) Math.ceil(consumeChance) == 0)
+            return Arrays.asList(I18n.format("worldcrafter.item.noConsume"));
         return Arrays.asList();
     }
     
@@ -65,9 +66,9 @@ public class JEIPlugin implements IModPlugin
     {
         double consumeChance = ingredient.getConsumeChance();
         if (consumeChance > 0 && consumeChance < 1)
-            return Arrays.asList(String.format("Consumes %.0f%%", consumeChance*100));
-        else if ((int) consumeChance == 0)
-            return Arrays.asList("Consumed");
+            return Arrays.asList(I18n.format("worldcrafter.fluid.consumeChance", (int) (consumeChance*100)));
+        else if ((int) consumeChance == 1)
+            return Arrays.asList(I18n.format("worldcrafter.fluid.consumed"));
         return Arrays.asList();
     }
     
@@ -79,7 +80,7 @@ public class JEIPlugin implements IModPlugin
             int min = item.getMin();
             int max = item.getMax();
             if (min != max)
-                return Arrays.asList(String.format("Produces %d-%d", min, max));
+                return Arrays.asList(I18n.format("worldcrafter.output.range", min, max));
         }
         return Arrays.asList();
     }

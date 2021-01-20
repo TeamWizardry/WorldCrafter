@@ -44,10 +44,10 @@ public class FluidIngredient extends Ingredient<FluidIngredient>
         
         for (BlockPos source : sources)
         {
-            world.setBlockState(source, Blocks.AIR.getDefaultState());
-            remaining--;
             if (remaining == 0)
                 return;
+            world.setBlockState(source, Blocks.AIR.getDefaultState());
+            remaining--;
         }
     }
     
