@@ -13,12 +13,9 @@ import com.teamwizardry.worldcrafter.loading.RecipeLoader;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -34,7 +31,6 @@ public class WorldCrafter
     public static final String MODID = "worldcrafter";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     
-    public static final IRecipeType<FluidRecipe> fluidRecipeType = new RecipeType<>();
     public static final RecipeStorage<FluidRecipe> fluidRecipes = new RecipeStorage<>();
     public static final IRecipeSerializer<FluidRecipe> fluidSerializer = new Recipe.Serializer<FluidRecipe>(fluidRecipes);
     
@@ -78,7 +74,6 @@ public class WorldCrafter
     
     public void registerRecipeData(RegistryEvent.Register<IRecipeSerializer<?>> event)
     {
-        Registry.register(Registry.RECIPE_TYPE, FluidRecipe.UID, fluidRecipeType);
         event.getRegistry().register(fluidSerializer.setRegistryName(FluidRecipe.UID));
     }
     
@@ -88,10 +83,5 @@ public class WorldCrafter
         manager.addReloadListener((ISelectiveResourceReloadListener) (listener, predicate) -> {
             RecipeLoader.loadRecipes(manager, WorldCrafter.MODID + "/recipes");
         });
-    }
-    
-    private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T>
-    {
-        @Override public String toString() { return Registry.RECIPE_TYPE.getKey(this).toString(); }
     }
 }
