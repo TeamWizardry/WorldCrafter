@@ -44,10 +44,9 @@ public class FluidRecipe extends Recipe
     @Override
     public boolean isValid(RecipeInfo info, List<ItemStack> items)
     {
-        boolean superValid = super.isValid(info, items);
-        boolean itemsMatch = this.matches(items);
         boolean fluidMatches = this.fluidMatches(info.getWorld(), info.getPos());
-        return superValid && itemsMatch && fluidMatches;
+        boolean superValid = super.isValid(info, items);
+        return superValid && fluidMatches;
     }
     
     @Override
