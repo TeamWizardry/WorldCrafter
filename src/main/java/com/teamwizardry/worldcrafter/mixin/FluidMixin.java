@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.teamwizardry.worldcrafter.fluid.FluidEntityTracker;
+import com.teamwizardry.worldcrafter.core.EntityTracker;
+import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
@@ -24,6 +25,6 @@ public abstract class FluidMixin
             return;
         if (!world.getFluidState(pos).isSource())
             return;
-        FluidEntityTracker.addItem(world, pos, (ItemEntity) entity);
+        EntityTracker.get(world, FluidRecipe.class).addItem(pos, (ItemEntity) entity);
     }
 }

@@ -1,5 +1,6 @@
 package com.teamwizardry.worldcrafter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -7,9 +8,16 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.teamwizardry.worldcrafter.fluid.FluidRecipe;
-import com.teamwizardry.worldcrafter.fluid.FluidRecipeManager;
-import com.teamwizardry.worldcrafter.loading.RecipeLoader;
+import com.teamwizardry.worldcrafter.core.RecipeConsumer;
+import com.teamwizardry.worldcrafter.core.RecipeStorage;
+import com.teamwizardry.worldcrafter.loading.recipe.RecipeLoader;
+import com.teamwizardry.worldcrafter.manager.ExplosionRecipeManager;
+import com.teamwizardry.worldcrafter.manager.FireRecipeManager;
+import com.teamwizardry.worldcrafter.manager.FluidRecipeManager;
+import com.teamwizardry.worldcrafter.recipe.ExplosionRecipe;
+import com.teamwizardry.worldcrafter.recipe.FireRecipe;
+import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
+import com.teamwizardry.worldcrafter.recipe.Recipe;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -32,9 +40,15 @@ public class WorldCrafter
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     
     public static final RecipeStorage<FluidRecipe> fluidRecipes = new RecipeStorage<>();
-    public static final IRecipeSerializer<FluidRecipe> fluidSerializer = new Recipe.Serializer<FluidRecipe>(fluidRecipes);
+    public static final IRecipeSerializer<FluidRecipe> fluidSerializer = new Recipe.Serializer<>(fluidRecipes);
     
-    public static final Function<List<ItemEntity>, List<ItemStack>> entityStripper = entities -> entities.stream().map(ItemEntity::getItem).collect(Collectors.toList());
+    public static final RecipeStorage<FireRecipe> fireRecipes = new RecipeStorage<>();
+    public static final IRecipeSerializer<FireRecipe> fireSerializer = new Recipe.Serializer<>(fireRecipes);
+    
+    public static final RecipeStorage<ExplosionRecipe> explosionRecipes = new RecipeStorage<>();
+    public static final IRecipeSerializer<ExplosionRecipe> explosionSerializer = new Recipe.Serializer<>(explosionRecipes);
+    
+    public static final Function<Collection<ItemEntity>, List<ItemStack>> entityStripper = entities -> entities.stream().map(ItemEntity::getItem).collect(Collectors.toList());
     
     public static WorldCrafter INSTANCE;
     
@@ -49,6 +63,8 @@ public class WorldCrafter
         eventBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeData);
         
         MinecraftForge.EVENT_BUS.register(FluidRecipeManager.class);
+        MinecraftForge.EVENT_BUS.register(FireRecipeManager.class);
+        MinecraftForge.EVENT_BUS.register(ExplosionRecipeManager.class);
     }
     
     public static ResourceLocation location(String path) { return new ResourceLocation(MODID, path); }

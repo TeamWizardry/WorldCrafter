@@ -1,56 +1,44 @@
 package com.teamwizardry.worldcrafter.jei;
 
-import static com.teamwizardry.worldcrafter.jei.JEIPlugin.inputFluidTooltips;
-
 import java.util.List;
 
-import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
+import com.teamwizardry.worldcrafter.recipe.FireRecipe;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.item.Items;
 
-public class FluidRecipeCategory extends BaseRecipeCategory<FluidRecipe>
+public class FireRecipeCategory extends BaseRecipeCategory<FireRecipe>
 {
-    public FluidRecipeCategory(IGuiHelper guiHelper)
+    public FireRecipeCategory(IGuiHelper guiHelper)
     {
         super(guiHelper,
-              FluidRecipe.UID,
+              FireRecipe.UID,
               guiHelper.createBlankDrawable(width, height),
-              I18n.format("worldcrafter.jei.fluidRecipe"),
-              guiHelper.createDrawableIngredient(new FluidStack(Fluids.WATER, 1000)));
+              I18n.format("worldcrafter.jei.fireRecipe"),
+              guiHelper.createDrawableIngredient(new ItemStack(Items.FLINT_AND_STEEL)));
     }
     
-    @Override public Class<? extends FluidRecipe> getRecipeClass() { return FluidRecipe.class; }
+    @Override public Class<? extends FireRecipe> getRecipeClass() { return FireRecipe.class; }
     
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidRecipe recipe, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, FireRecipe recipe, IIngredients ingredients)
     {
         super.setRecipe(recipeLayout, recipe, ingredients);
         
         IGuiItemStackGroup items = recipeLayout.getItemStacks();
-        IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
         
-        fluids.addTooltipCallback((slotIndex, isInput, stack, tooltip) -> 
-            tooltip.addAll(inputFluidTooltips(recipe.getFluid()))
-        );
-        
-        int numInputs = recipe.getItemIngredients().size();
-        int numOutputs = items.getGuiIngredients().size() - numInputs;
-        int inputRows = (numInputs+1)/2;
+        int numOutputs = items.getGuiIngredients().size() - 1;
         int outputRows = (numOutputs+1)/2;
         
-        int totalRows = Math.max(inputRows, outputRows);
+        int totalRows = Math.max(1, outputRows);
         
         int x = centerline - itemSize*3;
-        if (numInputs > 1) x -= itemSize;
         int y = 10 + totalRows * itemSize;
         int index = 0;
         for (List<ItemStack> list : ingredients.getInputs(VanillaTypes.ITEM))
@@ -82,9 +70,5 @@ public class FluidRecipeCategory extends BaseRecipeCategory<FluidRecipe>
             }
             index++;
         }
-        
-        FluidStack fluid = ingredients.getInputs(VanillaTypes.FLUID).get(0).get(0);
-        fluids.init(0, true, centerline - itemSize, 10 + totalRows * itemSize + itemSize, itemSize*2, itemSize*2, fluid.getAmount(), true, null);
-        fluids.set(0, ingredients.getInputs(VanillaTypes.FLUID).get(0));
     }
 }

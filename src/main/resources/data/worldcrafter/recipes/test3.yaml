@@ -1,7 +1,4 @@
-type: fluid
-fluid:
-  type: minecraft:water
-  count: 2
+type: explosion
 input:
 - item: minecraft:coal
   count: 3
@@ -12,5 +9,3 @@ output:
 - item: minecraft:diamond
   min: 1
   max: 2
-duration: 10
-isParallel: true

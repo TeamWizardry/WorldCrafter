@@ -1,5 +1,7 @@
 {
 	"worldcrafter.jei.fluidRecipe": "In-World Fluid Crafting",
+	"worldcrafter.jei.fireRecipe": "In-World Fire Crafting",
+	"worldcrafter.jei.explosionRecipe": "In-World Explosion Crafting",
 	
 	"worldcrafter.item.consumeChance": "Consumes %d%%",
 	"worldcrafter.item.noConsume": "Not Consumed",

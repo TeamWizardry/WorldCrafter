@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "worldcrafter.refmap.json",
   "mixins": [
-  	"FluidMixin"
+  	"FluidMixin",
+  	"FireMixin",
+  	"ExplosionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

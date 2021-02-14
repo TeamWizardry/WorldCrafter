@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 public abstract class Loader<T>
 {
+    public static final String TYPE = "type";
     protected static final String INPUT = "input";
     protected static final String OUTPUT = "output";
     protected static final String TICK = "tickEvents";
     protected static final String FINISH = "finishEvents";
     protected static final String DURATION = "duration";
+    protected static final String PARALLEL = "isParallel";
     
     public abstract T load(Map<String, Object> yaml);
     
@@ -48,6 +50,18 @@ public abstract class Loader<T>
             if (doubleObj instanceof Number)
                 return ((Number) doubleObj).doubleValue();
             throw new InvalidParameterException("Excpected [" + key + "] to be a Double, found " + doubleObj.getClass().getSimpleName() + " instead");
+        }
+        return defaultValue;
+    }
+    
+    public static final boolean loadBoolean(Map<String, Object> yaml, String key, boolean defaultValue)
+    {
+        if (yaml.containsKey(key))
+        {
+            Object boolObj = yaml.get(key);
+            if (boolObj instanceof Boolean)
+                return (Boolean) boolObj;
+            throw new InvalidParameterException("Expected [" + key + "] to be a Boolean, found " + boolObj.getClass().getSimpleName() + " instead");
         }
         return defaultValue;
     }
