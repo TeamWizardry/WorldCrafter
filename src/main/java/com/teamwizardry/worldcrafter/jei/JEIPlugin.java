@@ -6,7 +6,7 @@ import static com.teamwizardry.worldcrafter.WorldCrafter.fluidRecipes;
 import static com.teamwizardry.worldcrafter.WorldCrafter.lightningRecipes;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import com.teamwizardry.worldcrafter.WorldCrafter;
 import com.teamwizardry.worldcrafter.ingredient.FluidIngredient;
@@ -30,6 +30,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin
@@ -73,27 +75,27 @@ public class JEIPlugin implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(Blocks.TNT), ExplosionRecipe.UID);
     }
     
-    public static List<String> inputItemTooltips(ItemIngredient ingredient)
+    public static Collection<ITextComponent> inputItemTooltips(ItemIngredient ingredient)
     {
         double consumeChance = ingredient.getConsumeChance();
         if (consumeChance > 0 && consumeChance < 1)
-            return Arrays.asList(I18n.format("worldcrafter.item.consumeChance", (int) (consumeChance*100)));
+            return Arrays.asList(new StringTextComponent(I18n.format("worldcrafter.item.consumeChance", (int) (consumeChance*100))));
         else if ((int) Math.ceil(consumeChance) == 0)
-            return Arrays.asList(I18n.format("worldcrafter.item.noConsume"));
+            return Arrays.asList(new StringTextComponent(I18n.format("worldcrafter.item.noConsume")));
         return Arrays.asList();
     }
     
-    public static List<String> inputFluidTooltips(FluidIngredient ingredient)
+    public static Collection<ITextComponent> inputFluidTooltips(FluidIngredient ingredient)
     {
         double consumeChance = ingredient.getConsumeChance();
         if (consumeChance > 0 && consumeChance < 1)
-            return Arrays.asList(I18n.format("worldcrafter.fluid.consumeChance", (int) (consumeChance*100)));
+            return Arrays.asList(new StringTextComponent(I18n.format("worldcrafter.fluid.consumeChance", (int) (consumeChance*100))));
         else if ((int) consumeChance == 1)
-            return Arrays.asList(I18n.format("worldcrafter.fluid.consumed"));
+            return Arrays.asList(new StringTextComponent(I18n.format("worldcrafter.fluid.consumed")));
         return Arrays.asList();
     }
     
-    public static List<String> outputTooltips(int outputIndex, Output output)
+    public static Collection<ITextComponent> outputTooltips(int outputIndex, Output output)
     {
         if (outputIndex > 0 || output.getItemOutputs() != null)
         {
@@ -101,7 +103,7 @@ public class JEIPlugin implements IModPlugin
             int min = item.getMin();
             int max = item.getMax();
             if (min != max)
-                return Arrays.asList(I18n.format("worldcrafter.output.range", min, max));
+                return Arrays.asList(new StringTextComponent(I18n.format("worldcrafter.output.range", min, max)));
         }
         return Arrays.asList();
     }

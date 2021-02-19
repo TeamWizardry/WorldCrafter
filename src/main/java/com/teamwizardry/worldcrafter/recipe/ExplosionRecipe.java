@@ -27,5 +27,5 @@ public class ExplosionRecipe extends Recipe
 
     @Override public IRecipeSerializer<?> getSerializer() { return explosionSerializer; }
 
-    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getValue(UID).get(); }
+    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getOptional(UID).get(); }
 }

@@ -21,6 +21,8 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class FireRecipe extends Recipe
 {
@@ -78,11 +80,11 @@ public class FireRecipe extends Recipe
     }
     
     @Override
-    public List<String> getTooltipLines(int index, ItemStack stack)
+    public Collection<ITextComponent> getTooltipLines(int index, ItemStack stack)
     {
-        List<String> lines = new LinkedList<>();
-        tickConsumers.keySet().stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).forEach(lines::add);
-        finishConsumers.stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).forEach(lines::add);
+        Collection<ITextComponent> lines = new LinkedList<>();
+        tickConsumers.keySet().stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).map(StringTextComponent::new).forEach(lines::add);
+        finishConsumers.stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).map(StringTextComponent::new).forEach(lines::add);
         return lines;
     }
     
@@ -99,5 +101,5 @@ public class FireRecipe extends Recipe
 
     @Override public IRecipeSerializer<?> getSerializer() { return fireSerializer; }
 
-    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getValue(UID).get(); }
+    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getOptional(UID).get(); }
 }

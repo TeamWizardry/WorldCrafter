@@ -27,5 +27,5 @@ public class LightningRecipe extends Recipe
 
     @Override public IRecipeSerializer<?> getSerializer() { return lightningSerializer; }
 
-    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getValue(UID).get(); }
+    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getOptional(UID).get(); }
 }

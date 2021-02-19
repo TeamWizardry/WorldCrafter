@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 
 public class ItemIngredient extends Ingredient<ItemIngredient>
 {
@@ -23,7 +23,7 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
     
     private final ItemType type;
     private final Item item;
-    private final Tag<Item> tag;
+    private final ITag<Item> tag;
     private final int count;
     private final double baseConsumeChance;
     private final int consumeCount;
@@ -43,7 +43,7 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
         this.consumeChance = totalConsumeCount - consumeCount;
     }
     
-    public ItemIngredient(Tag<Item> tag, int count, double consumeChance)
+    public ItemIngredient(ITag<Item> tag, int count, double consumeChance)
     {
         this.type = TAG;
         this.item = null;
@@ -59,7 +59,7 @@ public class ItemIngredient extends Ingredient<ItemIngredient>
     
     public Item getItem() { return this.item; }
     
-    public Tag<Item> getTag() { return this.tag; }
+    public ITag<Item> getTag() { return this.tag; }
     
     public int getCount() { return this.count; }
     

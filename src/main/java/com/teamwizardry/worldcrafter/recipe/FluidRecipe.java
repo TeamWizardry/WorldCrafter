@@ -18,7 +18,7 @@ import com.teamwizardry.worldcrafter.ingredient.ItemIngredient;
 import com.teamwizardry.worldcrafter.ingredient.output.Output;
 
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -80,7 +80,7 @@ public class FluidRecipe extends Recipe
                 if (searched.contains(newPos))
                     continue;
                 
-                IFluidState state = world.getFluidState(newPos);
+                FluidState state = world.getFluidState(newPos);
                 if (!state.getFluid().equals(fluid.getFluid()))
                     continue;
                 toSearch.add(newPos);
@@ -107,5 +107,5 @@ public class FluidRecipe extends Recipe
 
     @Override public IRecipeSerializer<?> getSerializer() { return fluidSerializer; }
 
-    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getValue(UID).get(); }
+    @Override public IRecipeType<?> getType() { return RECIPE_TYPE.getOptional(UID).get(); }
 }

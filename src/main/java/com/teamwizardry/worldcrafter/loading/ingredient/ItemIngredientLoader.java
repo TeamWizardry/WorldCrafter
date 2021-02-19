@@ -6,8 +6,8 @@ import com.teamwizardry.worldcrafter.ingredient.ItemIngredient;
 import com.teamwizardry.worldcrafter.loading.Loader;
 
 import net.minecraft.item.Item;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,7 +32,7 @@ public class ItemIngredientLoader extends Loader<ItemIngredient>
         
         if (yaml.containsKey(TAG))
         {
-            Tag<Item> tag = ItemTags.getCollection().get(new ResourceLocation((String) yaml.get(TAG)));
+            ITag<Item> tag = ItemTags.getCollection().get(new ResourceLocation((String) yaml.get(TAG)));
             if (tag == null)
                 throw new IllegalArgumentException("No Item Tag " + yaml.get(TAG) + " found.");
             return new ItemIngredient(tag, count, chance);

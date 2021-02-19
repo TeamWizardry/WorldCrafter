@@ -30,6 +30,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -131,14 +133,14 @@ public abstract class Recipe implements IRecipe<IInventory>
     public Output getOutput() { return this.output; }
     public int getDuration() { return this.duration; }
     
-    public List<String> getTooltipLines(int index, ItemStack stack)
+    public Collection<ITextComponent> getTooltipLines(int index, ItemStack stack)
     {
         if (index >= ingredients.size()) index -= ingredients.size();
         ItemIngredient ingredient = ingredients.get(index);
         
-        List<String> lines = new LinkedList<>();
-        tickConsumers.keySet().stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).forEach(lines::add);
-        finishConsumers.stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).forEach(lines::add);
+        Collection<ITextComponent> lines = new LinkedList<>();
+        tickConsumers.keySet().stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).map(StringTextComponent::new).forEach(lines::add);
+        finishConsumers.stream().flatMap(consumer -> consumer.apply(this, ingredient, stack).stream()).map(StringTextComponent::new).forEach(lines::add);
         return lines;
     }
     
