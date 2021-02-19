@@ -5,8 +5,7 @@
   "refmap": "worldcrafter.refmap.json",
   "mixins": [
   	"FluidMixin",
-  	"FireMixin",
-  	"ExplosionMixin"
+  	"FireMixin"
   ],
   "injectors": {
     "defaultRequire": 1

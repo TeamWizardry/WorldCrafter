@@ -115,7 +115,7 @@ public abstract class Recipe implements IRecipe<IInventory>
         do
         {
             ingredients.forEach(ingredient -> ingredient.consume(items));
-            output.createOutput(info.getWorld(), info.getPos(), false);
+            output.createOutput(info.getWorld(), info.getPos());
         }
         while (isParallel && this.matches(entityStripper.apply(items)));
     }

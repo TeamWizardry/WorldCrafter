@@ -28,6 +28,7 @@ public class Output
     private List<ItemOutput> outputItems;
     private BlockOutput outputBlock;
     private FluidOutput outputFluid;
+    private boolean invulnerable;
     
     private OutputType outputType;
     
@@ -56,7 +57,15 @@ public class Output
         this.outputType = FLUID;
     }
     
-    public void createOutput(World world, BlockPos pos, boolean isInvulnerable)
+    public Output setInvulnerable() { return setInvulnerable(true); }
+    
+    public Output setInvulnerable(boolean invulnerable)
+    {
+        this.invulnerable = invulnerable;
+        return this;
+    }
+    
+    public void createOutput(World world, BlockPos pos)
     {
         switch (this.outputType)
         {
@@ -72,7 +81,7 @@ public class Output
                     return stack;
                 })
                 .map(stack -> new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack))
-                .peek(entity -> entity.setInvulnerable(isInvulnerable))
+                .peek(entity -> entity.setInvulnerable(invulnerable))
                 .forEach(world::addEntity);
                 break;
             case BLOCK:

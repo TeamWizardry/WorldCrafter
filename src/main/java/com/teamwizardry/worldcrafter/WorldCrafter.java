@@ -8,15 +8,18 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.teamwizardry.worldcrafter.core.EventHandler;
 import com.teamwizardry.worldcrafter.core.RecipeConsumer;
 import com.teamwizardry.worldcrafter.core.RecipeStorage;
 import com.teamwizardry.worldcrafter.loading.recipe.RecipeLoader;
 import com.teamwizardry.worldcrafter.manager.ExplosionRecipeManager;
 import com.teamwizardry.worldcrafter.manager.FireRecipeManager;
 import com.teamwizardry.worldcrafter.manager.FluidRecipeManager;
+import com.teamwizardry.worldcrafter.manager.LightningRecipeManager;
 import com.teamwizardry.worldcrafter.recipe.ExplosionRecipe;
 import com.teamwizardry.worldcrafter.recipe.FireRecipe;
 import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
+import com.teamwizardry.worldcrafter.recipe.LightningRecipe;
 import com.teamwizardry.worldcrafter.recipe.Recipe;
 
 import net.minecraft.entity.item.ItemEntity;
@@ -48,6 +51,9 @@ public class WorldCrafter
     public static final RecipeStorage<ExplosionRecipe> explosionRecipes = new RecipeStorage<>();
     public static final IRecipeSerializer<ExplosionRecipe> explosionSerializer = new Recipe.Serializer<>(explosionRecipes);
     
+    public static final RecipeStorage<LightningRecipe> lightningRecipes = new RecipeStorage<>();
+    public static final IRecipeSerializer<LightningRecipe> lightningSerializer = new Recipe.Serializer<>(lightningRecipes);
+    
     public static final Function<Collection<ItemEntity>, List<ItemStack>> entityStripper = entities -> entities.stream().map(ItemEntity::getItem).collect(Collectors.toList());
     
     public static WorldCrafter INSTANCE;
@@ -62,9 +68,12 @@ public class WorldCrafter
         eventBus.addGenericListener(RecipeConsumer.class, this::registerRecipeConsumers);
         eventBus.addGenericListener(IRecipeSerializer.class, this::registerRecipeData);
         
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
+        
         MinecraftForge.EVENT_BUS.register(FluidRecipeManager.class);
         MinecraftForge.EVENT_BUS.register(FireRecipeManager.class);
         MinecraftForge.EVENT_BUS.register(ExplosionRecipeManager.class);
+        MinecraftForge.EVENT_BUS.register(LightningRecipeManager.class);
     }
     
     public static ResourceLocation location(String path) { return new ResourceLocation(MODID, path); }

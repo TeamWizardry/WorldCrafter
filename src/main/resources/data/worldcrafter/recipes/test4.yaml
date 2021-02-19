@@ -1,0 +1,11 @@
+type: lightning
+input:
+- item: minecraft:coal
+  count: 3
+- item: minecraft:charcoal
+  count: 5
+  consumeChance: 0.2
+output:
+- item: minecraft:diamond
+  min: 1
+  max: 2

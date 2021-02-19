@@ -72,7 +72,7 @@ public class FireRecipe extends Recipe
         do
         {
             ingredient.consume(items);
-            output.createOutput(info.getWorld(), info.getPos(), true);
+            output.createOutput(info.getWorld(), info.getPos());
         }
         while (isParallel && this.matches(entityStripper.apply(items)));
     }

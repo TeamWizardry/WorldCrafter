@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 import com.teamwizardry.worldcrafter.recipe.ExplosionRecipe;
 import com.teamwizardry.worldcrafter.recipe.FireRecipe;
 import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
+import com.teamwizardry.worldcrafter.recipe.LightningRecipe;
 import com.teamwizardry.worldcrafter.recipe.Recipe;
 
 import net.minecraft.entity.item.ItemEntity;
@@ -26,6 +27,7 @@ public class EntityTracker
         trackers.put(FluidRecipe.class, new WeakHashMap<>());
         trackers.put(FireRecipe.class, new WeakHashMap<>());
         trackers.put(ExplosionRecipe.class, new WeakHashMap<>());
+        trackers.put(LightningRecipe.class, new WeakHashMap<>());
     }
     
     public static EntityTracker get(World world, Class<? extends Recipe> cls)

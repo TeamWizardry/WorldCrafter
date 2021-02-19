@@ -3,6 +3,7 @@ package com.teamwizardry.worldcrafter.loading.recipe;
 import static com.teamwizardry.worldcrafter.WorldCrafter.explosionRecipes;
 import static com.teamwizardry.worldcrafter.WorldCrafter.fireRecipes;
 import static com.teamwizardry.worldcrafter.WorldCrafter.fluidRecipes;
+import static com.teamwizardry.worldcrafter.WorldCrafter.lightningRecipes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,7 +115,7 @@ public class RecipeLoader
             case "fluid": fluidRecipes.addRecipe(FluidRecipeLoader.INSTANCE.load(yaml)); break;
             case "fire": fireRecipes.addRecipe(FireRecipeLoader.INSTANCE.load(yaml)); break;
             case "explosion": explosionRecipes.addRecipe(ExplosionRecipeLoader.INSTANCE.load(yaml)); break;
-            case "lightning": break;
+            case "lightning": lightningRecipes.addRecipe(LightningRecipeLoader.INSTANCE.load(yaml)); break;
             case "anvil": break;
             case "piston": break;
             case "splash": break;

@@ -19,6 +19,7 @@ import com.teamwizardry.worldcrafter.recipe.Recipe;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent.WorldTickEvent;
@@ -84,6 +85,16 @@ public class FireRecipeManager extends RecipeManager
         posToRemove.clear();
         
         tracker.forEach((pos, items) -> {
+            List<ItemEntity> entities = world.getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(BlockPos.fromLong(pos)));
+            items.removeIf(item -> !entities.contains(item));
+            if (items.isEmpty())
+                posToRemove.add(pos);
+        });
+        for (long pos : posToRemove)
+            tracker.clear(BlockPos.fromLong(pos));
+        posToRemove.clear();
+        
+        tracker.forEach((pos, items) -> {
             Map<Item, RecipeInfo> recipeMap = this.existingRecipeMaps.computeIfAbsent(pos, k -> new HashMap<>());
             for (ItemEntity entity : items)
             {
@@ -108,6 +119,5 @@ public class FireRecipeManager extends RecipeManager
                 }
             }
         });
-        tracker.clear();
     }
 }
