@@ -1,6 +1,6 @@
 package com.teamwizardry.worldcrafter.manager;
 
-import static com.teamwizardry.worldcrafter.WorldCrafter.explosionRecipes;
+import static com.teamwizardry.worldcrafter.WorldCrafter.lightningRecipes;
 import static net.minecraftforge.event.TickEvent.Phase.END;
 
 import java.util.HashMap;
@@ -31,6 +31,6 @@ public class LightningRecipeManager extends RecipeManager
         RecipeManager manager = LightningRecipeManager.get(event.world);
         EntityTracker tracker = EntityTracker.get(event.world, LightningRecipe.class);
         
-        manager.tickRecipes(event.world, tracker, explosionRecipes);
+        manager.tickRecipes(event.world, tracker, lightningRecipes);
     }
 }
