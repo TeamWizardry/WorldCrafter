@@ -3,6 +3,7 @@ package com.teamwizardry.worldcrafter.jei;
 import static com.teamwizardry.worldcrafter.WorldCrafter.explosionRecipes;
 import static com.teamwizardry.worldcrafter.WorldCrafter.fireRecipes;
 import static com.teamwizardry.worldcrafter.WorldCrafter.fluidRecipes;
+import static com.teamwizardry.worldcrafter.WorldCrafter.lightningRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import com.teamwizardry.worldcrafter.ingredient.output.Output;
 import com.teamwizardry.worldcrafter.recipe.ExplosionRecipe;
 import com.teamwizardry.worldcrafter.recipe.FireRecipe;
 import com.teamwizardry.worldcrafter.recipe.FluidRecipe;
+import com.teamwizardry.worldcrafter.recipe.LightningRecipe;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -42,7 +44,8 @@ public class JEIPlugin implements IModPlugin
         
         registry.addRecipeCategories(new FluidRecipeCategory(guiHelper),
                                      new FireRecipeCategory(guiHelper),
-                                     new ExplosionRecipeCategory(guiHelper));
+                                     new ExplosionRecipeCategory(guiHelper),
+                                     new LightningRecipeCategory(guiHelper));
     }
     
     @Override
@@ -51,6 +54,7 @@ public class JEIPlugin implements IModPlugin
         registry.addRecipes(fluidRecipes.getRecipes(), FluidRecipe.UID);
         registry.addRecipes(fireRecipes.getRecipes(), FireRecipe.UID);
         registry.addRecipes(explosionRecipes.getRecipes(), ExplosionRecipe.UID);
+        registry.addRecipes(lightningRecipes.getRecipes(), LightningRecipe.UID);
     }
     
     @Override

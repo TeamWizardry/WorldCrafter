@@ -9,7 +9,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +20,7 @@ public class LightningRecipeCategory extends BaseRecipeCategory<LightningRecipe>
               LightningRecipe.UID,
               guiHelper.createBlankDrawable(width, height),
               I18n.format("worldcrafter.jei.lightningRecipe"),
-              guiHelper.createDrawableIngredient(new ItemStack(Blocks.TNT)));
+              guiHelper.createBlankDrawable(16, 16));
     }
     
     @Override public Class<? extends LightningRecipe> getRecipeClass() { return LightningRecipe.class; }
