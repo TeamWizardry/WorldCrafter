@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[35,)"
 issueTrackerURL="https://github.com/TeamWizardry/WorldCrafter/issues"
 logoFile="wizardry_logo.png"
 
@@ -16,6 +16,6 @@ Create and customize your own in-world recipes
 [[dependencies.worldcrafter]]
     modId="forge"
     mandatory=true
-    versionRange="[31.1.0,)"
+    versionRange="[35.1.4,)"
     ordering="AFTER"
     side="BOTH"
